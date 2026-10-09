@@ -1,24 +1,20 @@
-const { workspaceId, apiBase } = window.KPI_CONFIG;
-document.getElementById("ws").textContent = workspaceId;
-const $status = document.getElementById("status");
-let token = sessionStorage.getItem("kpi_token") || "";
+const { workspaceId, apiBase, syncToken } = window.KPI_CONFIG;
 
 // Thin TeleCRM wrapper: all data lives in TeleCRM; the page only computes.
 async function tele(path, body) {
   const r = await fetch(`${apiBase}/enterprise/${workspaceId}${path}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${syncToken}` },
     body: JSON.stringify(body || {}),
   });
   if (!r.ok) throw new Error(`TeleCRM ${r.status}`);
   return r.json();
 }
 
-document.getElementById("connectBtn").onclick = async () => {
-  token = document.getElementById("token").value.trim();
+(async () => {
+  const el = document.getElementById("status");
   try {
-    await tele("/lead/search?limit=1", { fields: {} });
-    sessionStorage.setItem("kpi_token", token);
-    $status.textContent = "Connected.";
-  } catch (e) { $status.textContent = "Connection failed: " + e.message; }
-};
+    const res = await tele("/lead/search?limit=1", { fields: {} });
+    el.textContent = `Connected to TeleCRM (${(res.data || []).length >= 0 ? "ok" : ""}).`;
+  } catch (e) { el.textContent = "TeleCRM connection failed: " + e.message; }
+})();
