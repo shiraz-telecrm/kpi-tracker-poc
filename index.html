@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KPI Tracker POC</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>KPI Tracker <span class="tag">POC</span></h1>
+  <p>Powered entirely by TeleCRM data. No database.</p>
+</header>
+<main>
+  <section class="card" id="connect">
+    <h2>Connect</h2>
+    <p>Workspace: <code id="ws"></code></p>
+    <input id="token" type="password" placeholder="TeleCRM API token (kept in this tab only)">
+    <button id="connectBtn">Connect</button>
+    <p id="status" class="muted">Not connected.</p>
+  </section>
+  <section class="card" id="kpis"><h2>KPIs</h2><p class="muted">Requirements to follow.</p></section>
+</main>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
